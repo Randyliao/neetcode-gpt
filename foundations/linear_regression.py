@@ -1,17 +1,14 @@
 import numpy as np
 from numpy.typing import NDArray
 
-
 class Solution:
 
-    def binary_cross_entropy(self, y_true: NDArray[np.float64], y_pred: NDArray[np.float64]) -> float:
-        ep = 1e-7
-        y_pred = np.clip(y_pred, ep, 1 - ep)
-        loss = -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
-        return np.round(loss, 4)
+    def get_model_prediction(self, X: NDArray[np.float64], weights: NDArray[np.float64]) -> NDArray[np.float64]:
+       res = X @ weights
+       return np.round(res, 5)
 
-    def categorical_cross_entropy(self, y_true: NDArray[np.float64], y_pred: NDArray[np.float64]) -> float:
-        ep = 1e-7
-        y_pred = np.clip(y_pred, ep, 1 - ep)
-        loss = -np.mean(np.sum(y_true * np.log(y_pred), axis=1))
-        return np.round(loss, 4)
+    def get_error(self, model_prediction: NDArray[np.float64], ground_truth: NDArray[np.float64]) -> float:
+        # Compute mean squared error between predictions and ground truth
+        # Round to 5 decimal places
+        res = np.mean(np.square(model_prediction - ground_truth))
+        return np.round(res, 5)
